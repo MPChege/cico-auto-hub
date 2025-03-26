@@ -2,6 +2,16 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone, ChevronRight } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { 
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle
+} from "@/components/ui/navigation-menu";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,11 +36,9 @@ const Navbar = () => {
   
   useEffect(() => {
     setIsOpen(false);
-    // Prevent body scroll when mobile menu is open
     document.body.style.overflow = "auto";
   }, [location.pathname]);
   
-  // Toggle body scroll when mobile menu opens/closes
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -45,9 +53,16 @@ const Navbar = () => {
   
   const navItems = [
     { name: "Home", path: "/" },
-    { name: "Services", path: "/services" },
+    { name: "Services", path: "/services", hasDropdown: true },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
+  ];
+
+  const serviceItems = [
+    { title: "Engine Repair", description: "Professional diagnosis and repair services", path: "/services#engine" },
+    { title: "Brake Service", description: "Complete brake system inspection and repair", path: "/services#brakes" },
+    { title: "Oil Change", description: "Regular maintenance for optimal performance", path: "/services#oil" },
+    { title: "Tire Services", description: "Rotation, balancing, and replacement", path: "/services#tires" },
   ];
   
   return (
@@ -63,35 +78,75 @@ const Navbar = () => {
           to="/" 
           className="relative z-10 flex items-center"
         >
-          <span className="font-display text-xl md:text-2xl font-bold tracking-tight text-primary-900">
-            CICO<span className="text-secondary">AUTO</span>
+          <span className="font-display text-xl md:text-2xl font-bold tracking-tight">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary-700 to-primary">CICO</span>
+            <span className="text-secondary">AUTO</span>
           </span>
         </Link>
         
-        <div className="hidden md:flex items-center space-x-8">
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              to={item.path}
-              className={`text-sm font-medium transition-all duration-300 hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full ${
-                location.pathname === item.path
-                  ? "text-primary after:w-full font-semibold"
-                  : "text-foreground"
-              }`}
-            >
-              {item.name}
-            </Link>
-          ))}
+        <div className="hidden md:block">
+          <NavigationMenu>
+            <NavigationMenuList>
+              {navItems.map((item) => 
+                item.hasDropdown ? (
+                  <NavigationMenuItem key={item.name}>
+                    <NavigationMenuTrigger className="bg-transparent hover:bg-primary/5">
+                      {item.name}
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="w-[400px] p-4 grid gap-3"
+                      >
+                        <div className="grid grid-cols-1 gap-2">
+                          {serviceItems.map((service) => (
+                            <Link
+                              key={service.title}
+                              to={service.path}
+                              className="group block select-none space-y-1 rounded-md p-3 hover:bg-accent hover:text-accent-foreground transition-colors"
+                            >
+                              <div className="text-sm font-medium leading-none group-hover:text-primary transition-colors">
+                                {service.title}
+                              </div>
+                              <div className="line-clamp-2 text-xs leading-snug text-muted-foreground">
+                                {service.description}
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                ) : (
+                  <NavigationMenuItem key={item.name}>
+                    <Link to={item.path}>
+                      <NavigationMenuLink 
+                        className={`${navigationMenuTriggerStyle()} bg-transparent hover:bg-primary/5 ${
+                          location.pathname === item.path 
+                            ? "text-primary after:content-[''] after:absolute after:left-2 after:right-2 after:bottom-1 after:h-[2px] after:bg-primary" 
+                            : ""
+                        }`}
+                      >
+                        {item.name}
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                )
+              )}
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
         
         <div className="hidden md:flex items-center space-x-6">
-          <div className="flex items-center space-x-2 text-secondary-foreground border-r pr-6 border-gray-200">
+          <div className="flex items-center space-x-2 text-muted-foreground">
             <Phone size={18} className="text-primary" />
             <span className="text-sm font-medium">+254 712 345 678</span>
           </div>
           <Link
             to="/booking"
-            className="relative group overflow-hidden rounded-full bg-primary text-white px-6 py-2.5 text-sm font-medium transition-all duration-300 hover:bg-primary-600 hover:shadow-lg hover:shadow-primary/20"
+            className="group relative overflow-hidden rounded-full bg-primary text-white px-6 py-2.5 text-sm font-medium transition-all duration-300"
           >
             <span className="relative z-10 flex items-center">
               Book Appointment
@@ -114,46 +169,69 @@ const Navbar = () => {
         </button>
       </div>
       
-      {/* Mobile Menu */}
-      <div
-        className={`fixed inset-0 bg-white/95 backdrop-blur-md z-[5] transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        } md:hidden flex flex-col pt-20 px-6`}
-      >
-        <nav className="flex flex-col space-y-5 mt-6">
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              to={item.path}
-              className={`text-lg font-medium transition-all duration-200 hover:text-primary ${
-                location.pathname === item.path
-                  ? "text-primary font-semibold"
-                  : "text-foreground"
-              }`}
-              onClick={() => setIsOpen(false)}
-            >
-              {item.name}
-            </Link>
-          ))}
-          <Link
-            to="/booking"
-            className="mt-4 w-full flex justify-center items-center space-x-2 bg-primary text-white rounded-full py-3 font-medium shadow-md shadow-primary/10 hover:shadow-lg hover:shadow-primary/20 transition-all"
-            onClick={() => setIsOpen(false)}
+      {/* Mobile Menu with Animation */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-white/95 backdrop-blur-md z-[5] md:hidden flex flex-col pt-20 px-6"
           >
-            <span>Book Appointment</span>
-            <ChevronRight className="h-4 w-4" />
-          </Link>
-        </nav>
-        
-        <div className="mt-auto mb-8">
-          <div className="flex flex-col space-y-4">
-            <div className="flex items-center space-x-3 bg-primary-50 p-3 rounded-lg">
-              <Phone size={18} className="text-primary" />
-              <span className="text-foreground font-medium">+254 712 345 678</span>
+            <nav className="flex flex-col space-y-5 mt-6">
+              {navItems.map((item) => (
+                <div key={item.name}>
+                  <Link
+                    to={item.path}
+                    className={`text-lg font-medium transition-all duration-200 hover:text-primary flex justify-between items-center ${
+                      location.pathname === item.path
+                        ? "text-primary font-semibold"
+                        : "text-foreground"
+                    }`}
+                    onClick={() => !item.hasDropdown && setIsOpen(false)}
+                  >
+                    {item.name}
+                    {item.hasDropdown && <ChevronRight className="h-4 w-4" />}
+                  </Link>
+                  
+                  {item.hasDropdown && (
+                    <div className="ml-4 mt-2 space-y-2 border-l-2 border-primary/20 pl-4">
+                      {serviceItems.map((service) => (
+                        <Link
+                          key={service.title}
+                          to={service.path}
+                          className="block text-sm text-muted-foreground hover:text-primary py-1"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          {service.title}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+              <Link
+                to="/booking"
+                className="mt-4 w-full flex justify-center items-center space-x-2 bg-primary text-white rounded-full py-3 font-medium shadow-md shadow-primary/10 hover:shadow-lg hover:shadow-primary/20 transition-all"
+                onClick={() => setIsOpen(false)}
+              >
+                <span>Book Appointment</span>
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </nav>
+            
+            <div className="mt-auto mb-8">
+              <div className="flex flex-col space-y-4">
+                <div className="flex items-center space-x-3 bg-primary-50 p-3 rounded-lg">
+                  <Phone size={18} className="text-primary" />
+                  <span className="text-foreground font-medium">+254 712 345 678</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
