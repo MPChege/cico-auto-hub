@@ -1,11 +1,10 @@
-
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import PageTransition from "../components/shared/PageTransition";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import { Link } from "react-router-dom";
-import { Check, Users, Award, Clock, Tool } from "lucide-react";
+import { Check, Users, Award, Clock, Wrench } from "lucide-react";
 
 const About = () => {
   useEffect(() => {
@@ -43,7 +42,7 @@ const About = () => {
     {
       title: "Quality Workmanship",
       description: "We never compromise on the quality of our work, using only the best parts and materials for every repair.",
-      icon: <Tool className="h-6 w-6 text-primary-500" />,
+      icon: <Wrench className="h-6 w-6 text-primary-500" />,
     },
     {
       title: "Customer Satisfaction",
