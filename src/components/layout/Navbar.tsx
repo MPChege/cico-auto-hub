@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, ChevronRight } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,7 +54,7 @@ const Navbar = () => {
     <header 
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled 
-          ? "bg-white/95 backdrop-blur-md shadow-sm py-2" 
+          ? "bg-white/95 backdrop-blur-md shadow-md py-2" 
           : "bg-transparent py-3 md:py-5"
       }`}
     >
@@ -68,14 +68,14 @@ const Navbar = () => {
           </span>
         </Link>
         
-        <div className="hidden md:flex items-center space-x-6">
+        <div className="hidden md:flex items-center space-x-8">
           {navItems.map((item) => (
             <Link
               key={item.name}
               to={item.path}
               className={`text-sm font-medium transition-all duration-300 hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full ${
                 location.pathname === item.path
-                  ? "text-primary after:w-full"
+                  ? "text-primary after:w-full font-semibold"
                   : "text-foreground"
               }`}
             >
@@ -84,16 +84,20 @@ const Navbar = () => {
           ))}
         </div>
         
-        <div className="hidden md:flex items-center space-x-4">
-          <div className="flex items-center space-x-2 text-secondary">
-            <Phone size={16} />
+        <div className="hidden md:flex items-center space-x-6">
+          <div className="flex items-center space-x-2 text-secondary-foreground border-r pr-6 border-gray-200">
+            <Phone size={18} className="text-primary" />
             <span className="text-sm font-medium">+254 712 345 678</span>
           </div>
           <Link
             to="/booking"
-            className="btn-primary text-xs md:text-sm px-3 py-2 md:px-6 md:py-2.5"
+            className="relative group overflow-hidden rounded-full bg-primary text-white px-6 py-2.5 text-sm font-medium transition-all duration-300 hover:bg-primary-600 hover:shadow-lg hover:shadow-primary/20"
           >
-            Book Appointment
+            <span className="relative z-10 flex items-center">
+              Book Appointment
+              <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </span>
+            <span className="absolute inset-0 z-0 bg-gradient-to-r from-primary-600 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
           </Link>
         </div>
         
@@ -112,7 +116,7 @@ const Navbar = () => {
       
       {/* Mobile Menu */}
       <div
-        className={`fixed inset-0 bg-background z-[5] transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-0 bg-white/95 backdrop-blur-md z-[5] transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } md:hidden flex flex-col pt-20 px-6`}
       >
@@ -123,7 +127,7 @@ const Navbar = () => {
               to={item.path}
               className={`text-lg font-medium transition-all duration-200 hover:text-primary ${
                 location.pathname === item.path
-                  ? "text-primary"
+                  ? "text-primary font-semibold"
                   : "text-foreground"
               }`}
               onClick={() => setIsOpen(false)}
@@ -133,18 +137,19 @@ const Navbar = () => {
           ))}
           <Link
             to="/booking"
-            className="btn-primary mt-4 w-full flex justify-center"
+            className="mt-4 w-full flex justify-center items-center space-x-2 bg-primary text-white rounded-full py-3 font-medium shadow-md shadow-primary/10 hover:shadow-lg hover:shadow-primary/20 transition-all"
             onClick={() => setIsOpen(false)}
           >
-            Book Appointment
+            <span>Book Appointment</span>
+            <ChevronRight className="h-4 w-4" />
           </Link>
         </nav>
         
         <div className="mt-auto mb-8">
           <div className="flex flex-col space-y-4">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3 bg-primary-50 p-3 rounded-lg">
               <Phone size={18} className="text-primary" />
-              <span className="text-foreground">+254 712 345 678</span>
+              <span className="text-foreground font-medium">+254 712 345 678</span>
             </div>
           </div>
         </div>
