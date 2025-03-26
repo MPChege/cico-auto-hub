@@ -5,7 +5,7 @@ import { ChevronRight } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="min-h-screen relative flex items-center bg-neutral-900 overflow-hidden">
+    <section className="min-h-[100svh] relative flex items-center bg-neutral-900 overflow-hidden">
       {/* Background image with overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -16,74 +16,74 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/80 via-neutral-900/70 to-neutral-900/80"></div>
       </div>
       
-      <div className="container relative z-10 px-4 pt-24 lg:pt-0 mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
+      <div className="container relative z-10 px-4 py-16 pt-24 md:py-20 lg:py-0 mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+          <div className="space-y-6 md:space-y-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary-300 rounded-full mb-4">
+              <span className="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary-300 rounded-full mb-3 md:mb-4">
                 Premier Auto Service Provider
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight text-white leading-tight">
-                Expert Auto Care <br /> For Your <span className="text-primary-400">Vehicle</span>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight text-white leading-tight">
+                Expert Auto Care <br className="hidden sm:block" /> For Your <span className="text-primary-400">Vehicle</span>
               </h1>
-              <p className="mt-6 text-lg text-gray-300 max-w-xl">
+              <p className="mt-4 md:mt-6 text-base md:text-lg text-gray-300 max-w-xl">
                 Elevate your vehicle's performance with our comprehensive auto services. 
                 From routine maintenance to complex repairs, our expert technicians deliver excellence.
               </p>
             </motion.div>
             
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 pt-4"
+              className="flex flex-col sm:flex-row gap-3 md:gap-4 pt-2 md:pt-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <Link 
                 to="/booking" 
-                className="btn-primary text-base py-3.5 px-8"
+                className="btn-primary text-sm md:text-base py-2.5 md:py-3.5 px-6 md:px-8"
               >
                 Book Appointment
-                <ChevronRight className="ml-1 h-5 w-5" />
+                <ChevronRight className="ml-1 h-4 w-4 md:h-5 md:w-5" />
               </Link>
               <Link 
                 to="/services" 
-                className="btn-outline text-base py-3.5 border-white/20 text-white hover:bg-white/10"
+                className="btn-outline text-sm md:text-base py-2.5 md:py-3.5 border-white/20 text-white hover:bg-white/10"
               >
                 Our Services
               </Link>
             </motion.div>
             
             <motion.div 
-              className="flex flex-col sm:flex-row gap-8 pt-6"
+              className="flex flex-col sm:flex-row gap-6 md:gap-8 pt-4 md:pt-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <div className="flex items-center gap-3">
-                <div className="bg-primary rounded-full p-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="bg-primary rounded-full p-1.5 md:p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-white font-medium">Certified Mechanics</p>
-                  <p className="text-gray-400 text-sm">Experts in all vehicle types</p>
+                  <p className="text-white font-medium text-sm md:text-base">Certified Mechanics</p>
+                  <p className="text-gray-400 text-xs md:text-sm">Experts in all vehicle types</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-3">
-                <div className="bg-primary rounded-full p-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="bg-primary rounded-full p-1.5 md:p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-white font-medium">Fast Service</p>
-                  <p className="text-gray-400 text-sm">Quick turnaround times</p>
+                  <p className="text-white font-medium text-sm md:text-base">Fast Service</p>
+                  <p className="text-gray-400 text-xs md:text-sm">Quick turnaround times</p>
                 </div>
               </div>
             </motion.div>

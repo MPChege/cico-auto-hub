@@ -26,7 +26,22 @@ const Navbar = () => {
   
   useEffect(() => {
     setIsOpen(false);
+    // Prevent body scroll when mobile menu is open
+    document.body.style.overflow = "auto";
   }, [location.pathname]);
+  
+  // Toggle body scroll when mobile menu opens/closes
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
   
   const navItems = [
     { name: "Home", path: "/" },
@@ -39,8 +54,8 @@ const Navbar = () => {
     <header 
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled 
-          ? "bg-white/95 backdrop-blur-md shadow-sm py-3" 
-          : "bg-transparent py-5"
+          ? "bg-white/95 backdrop-blur-md shadow-sm py-2" 
+          : "bg-transparent py-3 md:py-5"
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
@@ -48,7 +63,7 @@ const Navbar = () => {
           to="/" 
           className="relative z-10 flex items-center"
         >
-          <span className="font-display text-2xl font-bold tracking-tight text-primary-900">
+          <span className="font-display text-xl md:text-2xl font-bold tracking-tight text-primary-900">
             CICO<span className="text-secondary">AUTO</span>
           </span>
         </Link>
@@ -76,21 +91,21 @@ const Navbar = () => {
           </div>
           <Link
             to="/booking"
-            className="btn-primary"
+            className="btn-primary text-xs md:text-sm px-3 py-2 md:px-6 md:py-2.5"
           >
             Book Appointment
           </Link>
         </div>
         
         <button
-          className="md:hidden relative z-10"
+          className="md:hidden relative z-10 p-2"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle Menu"
         >
           {isOpen ? (
-            <X className="h-6 w-6 text-foreground" />
+            <X className="h-5 w-5 text-foreground" />
           ) : (
-            <Menu className="h-6 w-6 text-foreground" />
+            <Menu className="h-5 w-5 text-foreground" />
           )}
         </button>
       </div>
@@ -99,9 +114,9 @@ const Navbar = () => {
       <div
         className={`fixed inset-0 bg-background z-[5] transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
-        } md:hidden flex flex-col pt-24 px-6`}
+        } md:hidden flex flex-col pt-20 px-6`}
       >
-        <nav className="flex flex-col space-y-6 mt-6">
+        <nav className="flex flex-col space-y-5 mt-6">
           {navItems.map((item) => (
             <Link
               key={item.name}
@@ -111,6 +126,7 @@ const Navbar = () => {
                   ? "text-primary"
                   : "text-foreground"
               }`}
+              onClick={() => setIsOpen(false)}
             >
               {item.name}
             </Link>
@@ -118,6 +134,7 @@ const Navbar = () => {
           <Link
             to="/booking"
             className="btn-primary mt-4 w-full flex justify-center"
+            onClick={() => setIsOpen(false)}
           >
             Book Appointment
           </Link>

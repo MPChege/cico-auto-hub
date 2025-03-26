@@ -86,10 +86,14 @@
   
   html {
     @apply scroll-smooth;
+    height: -webkit-fill-available;
   }
   
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow-x: hidden;
   }
   
   h1, h2, h3, h4, h5 {
@@ -107,6 +111,13 @@
   ::-webkit-scrollbar-thumb {
     @apply bg-primary/60 rounded-full transition-colors hover:bg-primary;
   }
+
+  /* Fix for iOS Safari bottom bar covering content */
+  @supports (-webkit-touch-callout: none) {
+    .min-h-screen {
+      min-height: -webkit-fill-available;
+    }
+  }
 }
 
 @layer components {
@@ -115,7 +126,7 @@
   }
   
   .section {
-    @apply py-16 md:py-20 lg:py-24;
+    @apply py-12 md:py-16 lg:py-24;
   }
   
   .card-hover {
@@ -123,15 +134,15 @@
   }
   
   .btn-primary {
-    @apply rounded-md bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-300 inline-flex items-center justify-center;
+    @apply rounded-md bg-primary px-4 py-2 md:px-6 md:py-2.5 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-300 inline-flex items-center justify-center;
   }
   
   .btn-secondary {
-    @apply rounded-md bg-secondary px-6 py-2.5 text-sm font-medium text-secondary-foreground shadow-sm hover:bg-secondary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary transition-all duration-300 inline-flex items-center justify-center;
+    @apply rounded-md bg-secondary px-4 py-2 md:px-6 md:py-2.5 text-sm font-medium text-secondary-foreground shadow-sm hover:bg-secondary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary transition-all duration-300 inline-flex items-center justify-center;
   }
   
   .btn-outline {
-    @apply rounded-md border border-primary bg-transparent px-6 py-2.5 text-sm font-medium text-primary hover:bg-primary/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-300 inline-flex items-center justify-center;
+    @apply rounded-md border border-primary bg-transparent px-4 py-2 md:px-6 md:py-2.5 text-sm font-medium text-primary hover:bg-primary/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-300 inline-flex items-center justify-center;
   }
   
   .glass-panel {
@@ -172,4 +183,15 @@
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 300ms, transform 300ms;
+}
+
+/* Mobile touch improvements */
+@media (max-width: 768px) {
+  button, a {
+    @apply p-2.5 min-h-[2.5rem] min-w-[2.5rem];
+  }
+  
+  input, select, textarea {
+    @apply text-base; /* Larger text for better mobile input */
+  }
 }
